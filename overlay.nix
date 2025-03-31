@@ -61,7 +61,7 @@ in
     );
 
     inherit (prev.callPackages ./pkgs/uefi-firmware { inherit (self) l4tVersion; })
-         edk2-jetson uefi-firmware;
+         edk2-src uefi-firmware;
 
     inherit (prev.callPackages ./pkgs/optee {
       # Nvidia's recommended toolchain is gcc9:
