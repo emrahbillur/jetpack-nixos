@@ -75,13 +75,13 @@ pkgsAarch64.buildLinux (
       {
         # Make NVME as a part of kernel not module
         BLK_DEV_NVME = yes;
-        #NVME_TARGET = yes;
         NVME_HWMON = yes;
         NVME_MULTIPATH = yes;
-        #NVME_TARGET_PASSTHROUGH = yes; 
+        PCIE_TEGRA194=yes;
+        USB_XHCI_PCI=yes;
+        PCIE_TEGRA194_HOST=yes;
+        PCIE_TEGRA194_EP=yes;
 
-        # Enable more debugging
-        DEBUG_DRIVER = yes;
 
         # Following modules need for iso_minimal
         ISO9660 = module;

@@ -186,12 +186,6 @@ in
     boot.kernelParams = [
       # Needed on Orin at least, but upstream has it for both
       "nvidia.rm_firmware_active=all"
-      "log_buf_len=128M"
-      "earlycon"
-      "earlyprintk"
-      #"initcall_debug"
-      "debug"
-      "ignore_loglevel"
     ]
     ++ lib.optionals cfg.console.enable [
       "console=tty0" # Output to HDMI/DP. May need fbcon=map:0 as well
