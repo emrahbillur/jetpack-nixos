@@ -82,6 +82,8 @@ pkgsAarch64.buildLinux (
         PCIE_TEGRA194_HOST=yes;
         PCIE_TEGRA194_EP=yes;
 
+        # TOSHIBA CAMERA 
+        CONFIG_MEDIA_SUPPORT = yes;
 
         # Following modules need for iso_minimal
         ISO9660 = module;
