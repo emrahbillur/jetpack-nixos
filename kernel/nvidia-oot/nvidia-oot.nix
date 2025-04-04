@@ -54,7 +54,7 @@ stdenv.mkDerivation {
   patches = [
     ./0001-nix-build-fixes.patch
     ./0002-downgrade-gcc-14-err-to-warn.patch
-    ./0004-nvidia-oot-add-tc358743-driver.patch
+    ./0004-nvidia-oot-add-tc358743-and-avt-alvium-drivers.patch
   ] ++ (lib.optional (kernel.modDirVersion == "6.6.75") [ ./0003-linux-6-6-build-fixes.patch ]);
 
   postUnpack = ''
