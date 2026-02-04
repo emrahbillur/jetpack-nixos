@@ -70,6 +70,17 @@ let
   mkRcmBootScript = { kernelPath, initrdPath, kernelCmdline, ... }@args: mkFlashScriptAuto (
     builtins.removeAttrs args [ "kernelPath" "initrdPath" "kernelCmdline" ] // {
       preFlashCommands = ''
+        WORKDIR=$(pwd)
+        
+        # Make sure we operate on a concrete flash.xml we can patch.
+        ${lib.optionalString (cfg.flashScriptOverrides.partitionTemplate != null)
+          "cp ${cfg.flashScriptOverrides.partitionTemplate} flash.xml"}
+
+        #For enabling preFlash commands for rcmbootflash script
+        ${cfg.flashScriptOverrides.preFlashCommands}
+
+        echo "Preparing RCM boot with kernel: ${kernelPath}, initrd: ${initrdPath}"
+        # Copy kernel and initrd to expected locations
         cp ${kernelPath} kernel/Image
         cp ${initrdPath} bootloader/l4t_initrd.img
 
@@ -88,7 +99,9 @@ let
       flashArgs =
         [ "--rcm-boot" ]
         # JetPack 7 wants to rebuild system.img with rootfs by default, we don't want that
-        ++ lib.optional (jetpackAtLeast "7") "-r"
+        ++ lib.optional ( cfg.majorVersion == "7" ) "-r"
+        # Force the use of the patched flash.xml when provided
+        ++ lib.optionals (cfg.flashScriptOverrides.partitionTemplate != null) [ "-c" "flash.xml" ]
         # A little jank, but don't have the flash script itself actually flash, just produce the flashcmd.txt file
         # We need to sign the boot.img file afterwards in this script
         ++ lib.optional (cfg.firmware.secureBoot.pkcFile != null) "--no-flash"
@@ -108,7 +121,9 @@ let
           echo "Flashing device now"
           cd bootloader; bash ./flashcmd.txt
         )
-      '';
+      ''
+      # Allow user post steps after successful flashcmd (host-side)
+      + cfg.flashScriptOverrides.postFlashCommands;
     }
   );
 
