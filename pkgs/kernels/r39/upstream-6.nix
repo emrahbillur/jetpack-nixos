@@ -110,6 +110,11 @@ buildLinux (args // {
     # Restore default LSM from security/Kconfig. Undoes Nvidia downstream changes.
     LSM = freeform "landlock,lockdown,yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,bpf";
   } // lib.optionalAttrs realtime {
+    # Enable virtualized display support for disp-vm
+    DRM_TEGRA_DCE = yes;
+    DRM_TEGRA_DCE_GUEST = yes;
+    DRM_TEGRA_DCE_HOST = yes;
+    DRM_TEGRA_DCE_DEBUG = yes;
     PREEMPT_VOLUNTARY = lib.mkForce no; # Disable the one set in common-config.nix
     # These are the options enabled/disabled by source/generic_rt_build.sh (this file comes after source/source_sync.sh)
     PREEMPT_RT = yes;
