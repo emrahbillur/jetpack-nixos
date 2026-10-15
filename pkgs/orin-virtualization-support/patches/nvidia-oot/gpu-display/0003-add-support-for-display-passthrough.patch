@@ -37,6 +37,15 @@ diff --git a/unifiedgpudisp/kernel-open/nvidia/nv-vm.c b/unifiedgpudisp/kernel-o
 +    at->flags.physical = NV_TRUE;
      return NV_OK;
  }
+
+@@ -1101,6 +1102,7 @@ NV_STATUS nv_alloc_contig_pages(
+         return NV_ERR_NO_MEMORY;
+     }
+ 
++    at->flags.physical = NV_TRUE;
+     return NV_OK;
+ }
+
  
 @@ -378,7 +379,7 @@
          nv_set_memory_type(at, NV_MEMORY_WRITEBACK);
